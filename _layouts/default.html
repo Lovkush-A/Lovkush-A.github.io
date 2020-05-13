@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+		<title>{{ page.title }}</title>
+    	<!-- link to main stylesheet -->
+		<link rel="stylesheet" type="text/css" href="/css/main.css">
+		<link rel="stylesheet" href="/assets/css/styles.css">
+	</head>
+	<body>
+    	{% include navigation.html %}
+
+		<div class="container">
+    		<div class="blurb">
+                {{ content }}
+    		</div><!-- /.blurb -->
+		</div><!-- /.container -->
+		<footer>
+    		<ul>
+        		<li><a href="mailto:lovkush@gmail.com">email</a></li>
+        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
+			</ul>
+		</footer>
+	</body>
+</html>
