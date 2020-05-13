@@ -1,0 +1,37 @@
+I"<p>In this post, I will briefly explain how I created this blog, using Jekyll
+and GitHub Pages.</p>
+
+<ol>
+  <li>
+    <p>I decided to create a blog after reading
+<a href="http://varianceexplained.org/r/start-blog/">David Robinson’s</a> advice. I had
+read many times before that I ought to create a blog/portfolio, but somehow this
+article was the tipping point. I recommend reading it!</p>
+  </li>
+  <li>
+    <p>I got a basic understanding of Jekyll and Github Pages by following
+<a href="http://jmcglone.com/guides/github-pages/">Jonathan McGlone’s</a> guide.
+It has minimal pre-requisites and is accessible to beginners.
+I did not follow all the steps, but it was a good starting point. It was
+easy to get something up and running, and it recommends resources to move forwards.</p>
+  </li>
+  <li>
+    <p>I followed <a href="https://jekyllrb.com/docs/step-by-step/01-setup/">Jekyll’s’</a>step-by-step tutorial. This is excellent. It is clear and
+it builds things up logically.  A few minor details:</p>
+    <ul>
+      <li>I created a Conda environment in which I installed Ruby and Jekyll.</li>
+      <li>I cloned the GitHub repository from Step 2 into this enviroment, and adapted
+ the steps as appropriate (e.g. copying the CSS from Step 2 into the SASS file).</li>
+      <li>I do not set up ‘authors’, as I am going to be the only author on this blog!</li>
+    </ul>
+  </li>
+</ol>
+
+<p>As with most of these things, the upfront cost is high and it requires patience
+to get through it. But now that I have done it, I am extremely pleased.
+Having created <a href="http://www.lovkush.com">my personal website</a> using a
+hodge-podge of HTML, CSS and PHP, I can appreciate how much smoother
+Jekyll makes everything. It is refreshing.</p>
+
+<p>Goodbye, angled-brackets! You shan’t be missed.</p>
+:ET
