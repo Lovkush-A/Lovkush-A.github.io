@@ -1,0 +1,31 @@
+I"�<p>I describe my initial attempts at predicting credit card fraud using a Kaggle dataset.</p>
+
+<h2 id="quick-personal-background">Quick Personal Background</h2>
+<p>I have been studying programming and data science using various resources. The main resources I have used so far, for data science specifically, are the <a href="https://www.kaggle.com/learn/overview">Kaggle Courses</a>.  I have completed:</p>
+
+<ul>
+  <li>Intro to Machine Learning</li>
+  <li>Intermediate Machine Learning</li>
+  <li>Pandas</li>
+  <li>Data Visualisation</li>
+</ul>
+
+<p>Following the advice I have read in numerous places, I decided I should try to do some data science of my own - not just follow some exercises. I skimmed through the Kaggle datasets, and <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">this dataset</a> on credit card fraud caught my fancy, so I jumped right in!</p>
+
+<h2 id="first-steps">First steps</h2>
+<p>In the description, it said that there are 284807 transactions with only 492 labelled as fraudulent. The task is to create a model to predict which transactions are fraudulent. The description also said that because the percentage of fraudulent cases is so small, it is best to use “AUPRC”, Area Under the Precision-Recall Curve, to evaluate the model. I had not heard of this yet so I did some Googling.</p>
+
+<p>I found <a href="https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/">this blog post</a> by Jason Brownlee, which explained what AUPRC is with some examples. This was helpful and I my first goal was to imitate what Jason did.</p>
+
+<p>Before going onto AUPRC and my models, I should say that there was no need to do any data cleaning for this dataset. It had already been cleaned and the data has been anonymised via a PCA. Again, I have not studied this yet, but a brief skim of <a href="https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/">this wikipedia article</a> on PCAs gives me some basic insight. It looks neat actually - it replaces the original data with new data which captures the variation in the old data but in such a way that the features in the new data have minimal correlation between them. My intuition is that the less correlation there is between features, the better the models works. PCA is definitely something I need to look into more at some point!</p>
+
+<h2 id="auprc">AUPRC</h2>
+<p>I will try to summarise the idea behind AUPRC.</p>
+<ol>
+  <li>We have features <code class="highlighter-rouge">X</code> and we are trying to predict <code class="highlighter-rouge">y</code>. In this case, <code class="highlighter-rouge">y</code> says whether the transaction is fraudulent or not. If <code class="highlighter-rouge">y==0</code> then the transaction is not fraudulent, and if <code class="highlighter-rouge">y==1</code> then it is.</li>
+  <li>The models I produce will give produce values of <code class="highlighter-rouge">y</code> between 0 and 1, representing the probability of a transaction being fraudulent.</li>
+  <li>To decide if a transaction is fraudulent or not, we need to also specify a threshold probability, <code class="highlighter-rouge">p</code>. If, and only if, <code class="highlighter-rouge">y&gt;p</code>, we label that transaction as fraudulent.</li>
+  <li>Precision is the fraction of transactions that are labelled as fraudulent that actually are fraudulent. For example, getting a precision of 80% means that 20% of the cases labelled as fraudulent are false-positives.</li>
+</ol>
+
+:ET
