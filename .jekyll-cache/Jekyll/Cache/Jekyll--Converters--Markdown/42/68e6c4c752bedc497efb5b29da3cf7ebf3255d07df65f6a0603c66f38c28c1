@@ -1,0 +1,3 @@
+I"
+<p>I create a simple hand-made model for the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a>, by just asking how many features are closer to the fraudulent mean than to the non-fraudulent mean. This achieves an AUC of 0.68.</p>
+:ET

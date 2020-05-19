@@ -1,11 +1,13 @@
-I"d<p>I carry on my investigation into the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a> dataset by seeing what happens if I remove entries from the dataset. The hope is that it reduces the time needed to create the models without drastically reducing the effectiveness of the models.</p>
+I"„<p>I carry on my investigation into the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a> dataset by seeing what happens if I remove entries from the dataset. The hope is that it reduces the time needed to create the models without drastically reducing the effectiveness of the models.</p>
 
 <h2 id="previous-posts">Previous posts</h2>
 
 <ul>
   <li>
+    <h3 id="investigating-credit-card-fraud-part-iii"><a href="/2020/05/19/creditcard3.html">Investigating Credit Card Fraud, Part III</a></h3>
+  </li>
+  <li>
     <h3 id="investigating-credit-card-fraud-part-i"><a href="/2020/05/14/creditcard1.html">Investigating Credit Card Fraud, Part I</a></h3>
-    <p>I present my initial attempts at predicting credit card fraud using a Kaggle dataset. Charts and code are included.</p>
   </li>
 </ul>
 
