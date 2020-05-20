@@ -9,7 +9,7 @@ I create a simple hand-made model for the [Kaggle Credit Card Fraud](https://www
 ## Previous posts
 {% for post in site.posts %}
 {% if (post.title contains "Credit Card Fraud") and (post.title != page.title) %}
-* ### [{{ post.title }}]({{ post.url }})
+* [{{ post.title }}]({{ post.url }})
 {% endif %}
 {% endfor %}
 

@@ -9,7 +9,7 @@ I carry on my investigation into the [Kaggle Credit Card Fraud](https://www.kagg
 ## Previous posts
 {% for post in site.posts %}
 {% if (post.title contains "Credit Card Fraud") and (post.title != page.title) %}
-* ### [{{ post.title }}]({{ post.url }})
+* [{{ post.title }}]({{ post.url }})
 {% endif %}
 {% endfor %}
 

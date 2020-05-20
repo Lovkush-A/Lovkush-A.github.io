@@ -1,54 +1,23 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Investigating Credit Card Fraud, Part III</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>Investigating Credit Card Fraud, Part III</h1>
-<p>19 May 2020</p>
+I"R<p>I want to create AIs that can play games using neural networks. To start off, I coded up TicTacToe and then had an AI play it using a brute force algorithm. The code for this is available on <a href="https://github.com/Lovkush-A/games/blob/master/tictactoe.py">github</a>.</p>
 
-<p>I create a simple hand-made model for the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a>, by just asking how many features are closer to the fraudulent mean than to the non-fraudulent mean. This achieves an AUC of 0.68.</p>
+<h2 id="ai-in-action">AI in Action</h2>
+<p>Below are screenshots illustrating the AI in action.</p>
 
-<h2 id="previous-posts">Previous posts</h2>
+<p>1) I select the AI to play first, and respond to its first move.</p>
 
-<ul>
-  <li>
-    <p><a href="/2020/05/16/creditcard2.html">Investigating Credit Card Fraud, Part II</a></p>
-  </li>
-  <li>
-    <p><a href="/2020/05/14/creditcard1.html">Investigating Credit Card Fraud, Part I</a></p>
-  </li>
-</ul>
+<p><img src="/assets/images/games_11.png" alt="image" /></p>
 
-<h2 id="the-hand-made-model">The hand-made model</h2>
-<p>Given the training data, for each feature, I compute the mean of that feature amongst all fraudulent transactions and the non-fraudulent transactions. For example, the mean value of the transaction was $124 for fraudulent transactions and $88 for non-fraudulent transactions.</p>
+<p>2) The AI plays in the top left, forcing me to play in the middle left.</p>
 
-<p>Then, given some unseen transaction, I ask how many of its features are closer to the fraudulent mean or non-fraudulent mean. For example, if the value of a transaction is $115, then it is closer to the fraudulent mean of $124, so this is evidence the transaction is fraudulent.</p>
+<p><img src="/assets/images/games_12.png" alt="image" /></p>
 
-<p>And that’s it! This is not sophisticated at all, but I am interested to see how much information is contained in the means, and more importantly, how much information is gained by using more sophisticated models like Random Forests and XGBoosts.</p>
+<p>3) The end is nigh. The AI creates two threats at once. I stop one of them…</p>
+
+<p><img src="/assets/images/games_13.png" alt="image" /></p>
+
+<p>4) But I cannot stop both. AI: 1, Humans: 0.</p>
+
+<p><img src="/assets/images/games_14.png" alt="image" /></p>
 
 <h2 id="results">Results</h2>
 <p>Below is the precision-recall graph for the model.</p>
@@ -131,14 +100,4 @@ for pred in preds:
 
 </code></pre></div></div>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
