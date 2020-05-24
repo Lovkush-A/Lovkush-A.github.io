@@ -1,36 +1,7 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>AIs for Games, Part I</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>AIs for Games, Part I</h1>
-<p>20 May 2020</p>
+I"Ì<p>I create a table of actors and their <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">bacon numbers</a> using recursion in SQL.</p>
 
-<p>I want to create AIs that can play games using neural networks. To start off, I coded up TicTacToe and then had an AI play it using a brute force algorithm. The code for this is available on <a href="https://github.com/Lovkush-A/games">github</a>.</p>
+<h2 id="the-data">The Data</h2>
+<p>The data is obtained from the CS50 Introduct</p>
 
 <h2 id="the-ai-in-action">The AI in Action</h2>
 <p>Below are screenshots illustrating the AI in action.</p>
@@ -63,14 +34,4 @@
   <li>Coding up a neural network to create a heuristic function</li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

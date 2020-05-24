@@ -1,0 +1,85 @@
+I"1<p>I create a table of actors and their <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">bacon numbers</a> using recursion in SQL. The largest finite bacon number is …</p>
+
+<h2 id="sql-in-python">SQL in Python</h2>
+<p>I ran the SQL commands in Python using the module sqlite3. I used <a href="https://swcarpentry.github.io/sql-novice-survey/10-prog/index.html">this article</a> to help me set it all up. Below is the code to run queries on the database <em>movies.db</em> in python.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    import sqlite3
+
+    def run_sql(query):
+        connection = sqlite3.connect('movies.db')
+        cursor = connection.cursor()
+        cursor.execute(query)
+        results = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    
+    return results
+</code></pre></div></div>
+
+<h2 id="understanding-the-database">Understanding the database</h2>
+<p>The data is in the form of a database, <em>movies.db</em>, and was obtained from the online course <a href="https://cs50.harvard.edu/x/2020/psets/7/movies/">CS50</a>, which in turn was obtained from imdb. To find out the structure of the tables in the database, I ran the following code (obtained from <a href="https://stackoverflow.com/questions/305378/list-of-tables-db-schema-dump-etc-using-the-python-sqlite3-api">stackoverflow</a>).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    def produce_schema():
+        sql = "SELECT name FROM sqlite_master WHERE type = 'table';"
+        tables = run_sql(sql)
+    
+        schema = {}
+        for table in tables:
+            sql = f"SELECT sql FROM sqlite_master WHERE type = 'table' and name = '{table[0]}'"
+            results = run_sql(sql)
+            print(results[0][0])
+            schema[table[0]] = results[0][0]
+    
+        return schema
+
+    produce_schema()
+</code></pre></div></div>
+
+<p>For the task of determining bacon numbers, the relevant tables and columns are:</p>
+<ul>
+  <li><code class="highlighter-rouge">people</code>, with columns <code class="highlighter-rouge">id</code> and <code class="highlighter-rouge">name</code>. Each person has a unique id. There are 1044499 people in the table.</li>
+  <li><code class="highlighter-rouge">stars</code>, with columns <code class="highlighter-rouge">movie_id</code> and <code class="highlighter-rouge">person_id</code>. Each row tells you that the actor with id <code class="highlighter-rouge">person_id</code> starred in the movie with id <code class="highlighter-rouge">movie_id</code>.</li>
+</ul>
+
+<p>Kevin Bacon has an id of 102, found by running the query <code class="highlighter-rouge">SELECT id FROM people WHERE name = 'Kevin Bacon' </code></p>
+
+<h2 id="the-recursive-query-to-find-bacon-numbers">The recursive query to find bacon numbers</h2>
+<p>To understand recursion in SQL, I recommend <a href="https://www.essentialsql.com/recursive-ctes-explained/">this guide</a> which explains recursion and how to use recursion in SQL, and then the <a href="https://www.sqlite.org/lang_with.html">SQLite documentation</a> to better understand how it works and what options are available to you.</p>
+
+<p>The query I created to produce the table of bacon numbers is:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    WITH RECURSIVE
+     costars(id1, id2) AS
+     ( 
+       SELECT stars1.person_id, stars2.person_id
+       FROM stars AS stars1
+       JOIN stars AS stars2
+       ON stars1.movie_id = stars2.movie_id
+     ),
+     bacon(id, num) AS
+     (
+       VALUES(102, 0)
+       UNION
+       SELECT id2, num+1
+       FROM bacon JOIN costars
+       ON bacon.id = costars.id1
+       WHERE num &lt; 9
+     )
+     SELECT name, MIN(num)
+     FROM bacon JOIN people ON bacon.id = people.id
+     GROUP BY name
+     ORDER BY num
+</code></pre></div></div>
+
+<ul>
+  <li>The table <code class="highlighter-rouge">costars</code> lists all pairs of actors that co-starred in a movie. This is obtained by doing a self-join of the stars table.</li>
+  <li>The table <code class="highlighter-rouge">bacon</code> is the main table. <code class="highlighter-rouge">id</code> is the id of the actor and <code class="highlighter-rouge">num</code> is the bacon number.
+    <ul>
+      <li>It starts off with the entry <code class="highlighter-rouge">(102,0)</code>.  102 is Kevin Bacon’s id and 0 is Kevin Bacon’s Bacon number.</li>
+      <li>Then for any entry <code class="highlighter-rouge">(id, num)</code> already in the table, we add a new row <code class="highlighter-rouge">(id2, num+1)</code>, whenever <code class="highlighter-rouge">id2</code> costarred with <code class="highlighter-rouge">id</code>.</li>
+      <li><code class="highlighter-rouge">num &lt; 9</code> indicates we will only have a maximum bacon number of 9. Without this manual limit, the recursive query would never end. This is because the underlying data is not acyclic: if a is a costar with b, then b is a costar of a.</li>
+    </ul>
+  </li>
+  <li>In the end, I select the relevant data from this recursive creation. Because each actor can appear many times in this construction, I use <code class="highlighter-rouge">GROUP BY</code> to ensure each actor appears only once. I use <code class="highlighter-rouge">MIN(num)</code> to select each actor’s earliest appearance.</li>
+</ul>
+
+:ET

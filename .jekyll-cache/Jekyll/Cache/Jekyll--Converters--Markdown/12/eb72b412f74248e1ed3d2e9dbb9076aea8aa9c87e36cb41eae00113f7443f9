@@ -1,40 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Blog</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-                	class = "current"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1 id="blog">Blog</h1>
+I"_
+<h1 id="blog">Blog</h1>
 
 <ul>
   <li>
     <h3 id="bacon-numbers-via-recursive-sql"><a href="/2020/05/24/recursion_sql.html">Bacon numbers via Recursive SQL</a></h3>
-    <p>I create a table of actors and their <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">bacon numbers</a> using recursion in SQL. The largest finite bacon number is 13.</p>
+    <p>I create a table of actors and their <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">bacon numbers</a> using recursion in SQL. The largest finite bacon number is …</p>
   </li>
   <li>
     <h3 id="ais-for-games-part-i"><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></h3>
@@ -67,14 +37,4 @@ and GitHub Pages.</p>
   </li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
