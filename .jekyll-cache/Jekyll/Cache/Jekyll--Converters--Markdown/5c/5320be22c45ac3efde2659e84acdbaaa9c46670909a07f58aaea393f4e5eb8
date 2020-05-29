@@ -1,0 +1,114 @@
+I"�<p>I begin the hyper-parameter optimisations. I started by looking at <code class="highlighter-rouge">n_estimators</code> in the Random Forest model. The first attempt to determine which value was the best produced a surprising range of performances, so I delved further to better understand how the performance can depend on the folds.</p>
+
+<h2 id="other-posts-in-series">Other posts in series</h2>
+
+<ul>
+  <li>
+    <p><a href="/2020/05/19/creditcard3.html">Investigating Credit Card Fraud, Part III</a></p>
+  </li>
+  <li>
+    <p><a href="/2020/05/16/creditcard2.html">Investigating Credit Card Fraud, Part II</a></p>
+  </li>
+  <li>
+    <p><a href="/2020/05/14/creditcard1.html">Investigating Credit Card Fraud, Part I</a></p>
+  </li>
+</ul>
+
+<h2 id="first-attempt">First attempt</h2>
+<p>I used a k-fold cross validation with 4 folds to determine what is a good number of estimators for the Random Forest model. The code to do this is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#create train-valid versus test split
+Xtv, X_test, ytv, y_test = train_test_split(X,y, random_state=0, test_size=0.2)
+
+#create KFold object
+kf = KFold(n_splits = 4,
+           shuffle = True,
+           random_state = 0)
+
+
+
+Given the training data, for each feature, I compute the mean of that feature amongst all fraudulent transactions and the non-fraudulent transactions. For example, the mean value of the transaction was $124 for fraudulent transactions and $88 for non-fraudulent transactions.
+
+Then, given some unseen transaction, I ask how many of its features are closer to the fraudulent mean or non-fraudulent mean. For example, if the value of a transaction is $115, then it is closer to the fraudulent mean of $124, so this is evidence the transaction is fraudulent.
+
+And that's it! This is not sophisticated at all, but I am interested to see how much information is contained in the means, and more importantly, how much information is gained by using more sophisticated models like Random Forests and XGBoosts. 
+
+
+
+## Results
+Below is the precision-recall graph for the model.
+
+![image](/assets/images/creditcard_3.png)
+
+The AUC score is not great, only 0.616, but the model manages to identify ~70% of fraudulent claims with a precision of 0.8, which is not too bad!
+
+At the end of the previous post, I said I hoped to achieve a score of 0.7. To do this, I just flattened the above precision-recall curve, by grouping together all the 'high probability' transactions (see code for explicit details).  See the new curve:
+
+![image](/assets/images/creditcard_3_2.png)
+
+An AUC of 0.68! Not quite 0.7, but not too shabby.
+
+
+
+## Final thoughts
+There are several ways one could easily improve this model. One example is that I weighted each of the features equally, but some features ought to be more weighted than others.  Another example is that I did not consider how much closer a value was to the fraudulent mean compared to the non-fraudulent mean. There are many more possibilities. However, all of these are just the initial steps to creating one of the standard models - this hand-made model is just a (bad) Random Forest after all!
+
+Doing this hands-on modelling has been quite satisfying. Though Random Forests and XGBoosts produce much better models, they did not actually teach me anything. Of course, one big reason for this is that I do not yet know how to extract information from those models - I have only learnt how to create them.  Even so, there is something immediately tangible in the simplicity of this hand-made model: 70% of fraudulent transactions follow the average trends of previous fraudulent claims. Though I am prepared to be wrong, I doubt the insights from XGBoosts will be as easy to formulate as that!
+
+
+## The code
+</code></pre></div></div>
+<h1 id="import-modules">import modules</h1>
+<p>import numpy as np
+import pandas as pd</p>
+
+<p>from sklearn.model_selection import train_test_split</p>
+
+<p>from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import auc
+from matplotlib import pyplot as plt</p>
+
+<h1 id="import-data-and-create-train_test-split">import data and create train_test split</h1>
+<p>data = pd.read_csv(“creditcard.csv”)
+y = data.Class
+X = data.drop([‘Class’], axis = 1)
+Xt, Xv, yt, yv = train_test_split(X,y, random_state=0)</p>
+
+<h1 id="calculate-means-for-fraudulent-and-non-fraudulent-claims-for-training-data">calculate means for fraudulent and non-fraudulent claims for training data</h1>
+<p>data_t = pd.concat([Xt, yt], axis = 1)
+means = data_t.groupby(‘Class’).mean()
+means_mid_point = (means.loc[0] + means.loc[1])/2</p>
+
+<h1 id="create-function-to-create-predictions">create function to create predictions</h1>
+<p>def make_prob(row):
+    prob = 0
+    for col in row.index:
+        if (row[col] &gt; means_mid_point[col]) and (means.loc[1, col] &gt; means.loc[0, col]):
+            prob += 1
+        elif (row[col] &lt; means_mid_point[col]) and (means.loc[1, col] &lt; means.loc[0, col]):
+            prob += 1
+    return prob/30</p>
+
+<h1 id="create-predictions-calculate-auc-and-plot-prc">create predictions, calculate AUC and plot PRC</h1>
+<p>preds = Xv.apply(make_prob, axis = 1)
+precision, recall, _ = precision_recall_curve(yv, preds)
+auc_handmade = auc(recall, precision)</p>
+
+<p>plt.plot(recall, precision, marker = ‘.’)
+plt.xlabel(‘Recall’)
+plt.ylabel(‘Precision’)
+plt.title(f’Hand-made model. AUC = {auc_handmade:.3f}’)
+plt.savefig(‘creditcard_3_handmade’)</p>
+
+<h1 id="tweak-predictions-to-flatten-the-curve">tweak predictions to ‘flatten the curve’</h1>
+<p>preds2 = []</p>
+
+<p>for pred in preds:
+    if pred &gt; 0.7:
+        preds2.append(0.8)
+    else:
+        preds2.append(pred)</p>
+
+<p>```</p>
+
+:ET

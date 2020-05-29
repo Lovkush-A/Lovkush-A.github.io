@@ -6,6 +6,13 @@ title: Investigating Credit Card Fraud, Part I
 I present my initial attempts at predicting credit card fraud using a Kaggle dataset. Charts and code are included.
 
 
+## Other posts in series
+{% for post in site.posts %}
+{% if (post.title contains "Credit Card Fraud") and (post.title != page.title) %}
+* [{{ post.title }}]({{ post.url }})
+{% endif %}
+{% endfor %}
+
 
 ## Quick Personal Background
 I have been studying programming and data science using various resources. The main resources I have used so far, for data science specifically, are the [Kaggle Courses](https://www.kaggle.com/learn/overview).  I have completed:

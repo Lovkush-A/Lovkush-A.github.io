@@ -6,7 +6,7 @@ title: Investigating Credit Card Fraud, Part II
 I carry on my investigation into the [Kaggle Credit Card Fraud](https://www.kaggle.com/mlg-ulb/creditcardfraud) dataset by seeing what happens if I remove entries from the dataset. The hope is that it reduces the time needed to create the models without drastically reducing the effectiveness of the models.
 
 
-## Previous posts
+## Other posts in series
 {% for post in site.posts %}
 {% if (post.title contains "Credit Card Fraud") and (post.title != page.title) %}
 * [{{ post.title }}]({{ post.url }})

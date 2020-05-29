@@ -6,7 +6,7 @@ title: Investigating Credit Card Fraud, Part III
 I create a simple hand-made model for the [Kaggle Credit Card Fraud](https://www.kaggle.com/mlg-ulb/creditcardfraud), by just asking how many features are closer to the fraudulent mean than to the non-fraudulent mean. This achieves an AUC of 0.68.
 
 
-## Previous posts
+## Other posts in series
 {% for post in site.posts %}
 {% if (post.title contains "Credit Card Fraud") and (post.title != page.title) %}
 * [{{ post.title }}]({{ post.url }})

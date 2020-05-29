@@ -1,38 +1,6 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Investigating Credit Card Fraud, Part III</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>Investigating Credit Card Fraud, Part III</h1>
-<p>19 May 2020</p>
+I"¶<p>I create a simple hand-made model for the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a>, by just asking how many features are closer to the fraudulent mean than to the non-fraudulent mean. This achieves an AUC of 0.68.</p>
 
-<p>I create a simple hand-made model for the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a>, by just asking how many features are closer to the fraudulent mean than to the non-fraudulent mean. This achieves an AUC of 0.68.</p>
-
-<h2 id="other-posts-in-series">Other posts in series</h2>
+<h2 id="previous-posts">Previous posts</h2>
 
 <ul>
   <li>
@@ -134,14 +102,4 @@ for pred in preds:
 
 </code></pre></div></div>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

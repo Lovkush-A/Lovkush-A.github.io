@@ -1,40 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Blog</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-                	class = "current"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1 id="blog">Blog</h1>
+I"
+<h1 id="blog">Blog</h1>
 
 <ul>
   <li>
     <h3 id="investigating-credit-card-fraud-part-iv"><a href="/2020/05/29/creditcard4.html">Investigating Credit Card Fraud, Part IV</a></h3>
-    <p>I begin the hyper-parameter optimisations. I started by looking at <code class="highlighter-rouge">n_estimators</code> in the Random Forest model. The first attempt to determine which value was the best produced a surprising range of performances, so I delved further to better understand how the performance can depend on the folds.</p>
+    <p>I create a simple hand-made model for the <a href="https://www.kaggle.com/mlg-ulb/creditcardfraud">Kaggle Credit Card Fraud</a>, by just asking how many features are closer to the fraudulent mean than to the non-fraudulent mean. This achieves an AUC of 0.68.</p>
   </li>
   <li>
     <h3 id="bacon-numbers-via-recursive-sql"><a href="/2020/05/24/recursion_sql.html">Bacon numbers via Recursive SQL</a></h3>
@@ -71,14 +41,4 @@ and GitHub Pages.</p>
   </li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
