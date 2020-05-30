@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Investigating Credit Card Fraud, Part V</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>Investigating Credit Card Fraud, Part V</h1>
-<p>30 May 2020</p>
-
-<p>I complete the hyper-parameter optimisations for the random forest and xgboost models. I then create a final model using these values to produce AUCs of 0.852 and 0.872.</p>
+I"6O<p>I complete the hyper-parameter optimisations for the random forest and xgboost models. I then create a final model using these values to produce AUCs of 0.852 and 0.872.</p>
 
 <h2 id="other-posts-in-series">Other posts in series</h2>
 
@@ -244,14 +212,4 @@ n_estimators  max_depth  max_features    auc
         <span class="n">i</span><span class="p">+=</span><span class="m">1</span>
 </code></pre></div></div>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

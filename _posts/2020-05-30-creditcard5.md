@@ -3,7 +3,7 @@ layout: post
 title: Investigating Credit Card Fraud, Part V
 ---
 
-I complete the hyper-parameter optimisations for the random forest and xgboost models. I then create a final model using these values to produce AUCs of 0.852 and ???
+I complete the hyper-parameter optimisations for the random forest and xgboost models. I then create a final model using these values to produce AUCs of 0.852 and 0.872.
 
 
 ## Other posts in series
