@@ -1,42 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Investigating Credit Card Fraud, Part IV</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>Investigating Credit Card Fraud, Part IV</h1>
-<p>29 May 2020</p>
-
-<p>I begin the hyper-parameter optimisations. I started by looking at <code class="highlighter-rouge">n_estimators</code> in the Random Forest model. The first attempt to determine which value was the best produced a surprising range of performances, so I delved further to better understand how the performance can depend on the folds.</p>
+I"ÚM<p>I complete the hyper-parameter optimisations for the random forest and xgboost models. I then create a final model using these values to produce AUCs of ??? and ???</p>
 
 <h2 id="other-posts-in-series">Other posts in series</h2>
 
 <ul>
   <li>
-    <p><a href="/2020/05/30/creditcard5.html">Investigating Credit Card Fraud, Part V</a></p>
+    <p><a href="/2020/05/29/creditcard4.html">Investigating Credit Card Fraud, Part IV</a></p>
   </li>
   <li>
     <p><a href="/2020/05/19/creditcard3.html">Investigating Credit Card Fraud, Part III</a></p>
@@ -49,59 +17,10 @@
   </li>
 </ul>
 
-<h2 id="first-attempt">First attempt</h2>
-<p>I used a k-fold cross validation with 4 folds to determine what is a good number of estimators for the Random Forest model. The code to do this is at the bottom. The table below shows the AUC metrics obtained.</p>
+<h2 id="forest-model">Forest model</h2>
+<p>I tidied up the code from yesterday to allow me to optimise for more than one parameter at once. For each combination of hyper-parameters, I obtained 20 different AUCs (by using five 4-fold cross validations). The results were stored in a pandas dataframe.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align: center">Fold</th>
-      <th style="text-align: center">n_estimators = 10</th>
-      <th style="text-align: center">n_estimators = 50</th>
-      <th style="text-align: center">n_estimators = 100</th>
-      <th style="text-align: center">n_estimators = 200</th>
-      <th style="text-align: center">n_estimators = 500</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align: center">0</td>
-      <td style="text-align: center">0.765</td>
-      <td style="text-align: center">0.793</td>
-      <td style="text-align: center">0.775</td>
-      <td style="text-align: center">0.770</td>
-      <td style="text-align: center">0.756</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">1</td>
-      <td style="text-align: center">0.683</td>
-      <td style="text-align: center">0.690</td>
-      <td style="text-align: center">0.691</td>
-      <td style="text-align: center">0.680</td>
-      <td style="text-align: center">0.664</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">2</td>
-      <td style="text-align: center">0.766</td>
-      <td style="text-align: center">0.783</td>
-      <td style="text-align: center">0.781</td>
-      <td style="text-align: center">0.784</td>
-      <td style="text-align: center">0.774</td>
-    </tr>
-    <tr>
-      <td style="text-align: center">3</td>
-      <td style="text-align: center">0.815</td>
-      <td style="text-align: center">0.841</td>
-      <td style="text-align: center">0.838</td>
-      <td style="text-align: center">0.833</td>
-      <td style="text-align: center">0.826</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>From this table, we can see that the AUC depends a lot more on the fold rather than the hyper-parameter. I was surprised at how much the AUC could vary, depending on how the data was chopped up. Nevertheless, it is still clear that the optimal choice for the number of estimators is either 50 or 100. However, it is hard to judge if 50 is definitely better than the default of 100; it is better in 3 out of the 4 folds but maybe this was just a fluke.</p>
-
-<p>I wanted to better understand how the AUC depends on the folds, and make a better decision about which hyper-parameter is better, so I decided to repeat this process many times and see the resulting patterns.</p>
+<p>I then averaged over all the folds and sorted the results. A sample of the outputs is below:</p>
 
 <h2 id="second-attempt">Second attempt</h2>
 <p>I repeated the first attempt 20 times and stored the results in a pandas dataframe. I then plotted scatterplots and histograms to visualise the patterns.  In each of them, I compared the performance against the default of 100 estimators. As always, the code for this is at the bottom.</p>
@@ -219,14 +138,4 @@
         <span class="n">auc_df</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">auc_df</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="m">0</span><span class="p">]]</span> <span class="p">=</span> <span class="n">aucs</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span>
 </code></pre></div></div>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

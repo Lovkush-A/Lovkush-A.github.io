@@ -1,42 +1,10 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Investigating Credit Card Fraud, Part I</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>Investigating Credit Card Fraud, Part I</h1>
-<p>14 May 2020</p>
-
-<p>I present my initial attempts at predicting credit card fraud using a Kaggle dataset. Charts and code are included.</p>
+I"è+<p>I present my initial attempts at predicting credit card fraud using a Kaggle dataset. Charts and code are included.</p>
 
 <h2 id="other-posts-in-series">Other posts in series</h2>
 
 <ul>
   <li>
-    <p><a href="/2020/05/30/creditcard5.html">Investigating Credit Card Fraud, Part V</a></p>
+    <p><a href="/2020/05/30/creditcard5.html">Investigating Credit Card Fraud, Part IV</a></p>
   </li>
   <li>
     <p><a href="/2020/05/29/creditcard4.html">Investigating Credit Card Fraud, Part IV</a></p>
@@ -198,14 +166,4 @@ pyplot.savefig('creditcard_1_xgb.png')
 
 </code></pre></div></div>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
