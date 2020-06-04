@@ -1,40 +1,9 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Blog</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-                	class = "current"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1 id="blog">Blog</h1>
+I"<h1 id="blog">Blog</h1>
 
 <ul>
   <li>
-    <h3 id="ais-for-games-part-ii"><a href="/2020/06/04/games2.html">AIs for Games, Part II</a></h3>
-    <p>Here I created an algorithm and the code to search through the game-tree to a given maximum depth. This has been written for the game Pentago specifically. The code seems to work, but is highly inefficient.</p>
+    <h3 id="ais-for-games-part-i"><a href="/2020/06/04/games2.html">AIs for Games, Part I</a></h3>
+    <p>I want to create AIs that can play games using neural networks. To start off, I coded up TicTacToe and then had an AI play it using a brute force algorithm. The code for this is available on <a href="https://github.com/Lovkush-A/games">github</a>.</p>
   </li>
   <li>
     <h3 id="investigating-credit-card-fraud-part-v"><a href="/2020/05/30/creditcard5.html">Investigating Credit Card Fraud, Part V</a></h3>
@@ -49,7 +18,7 @@
     <p>I create a table of actors and their <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon#Bacon_numbers">bacon numbers</a> using recursion in SQL. The largest finite bacon number is 13.</p>
   </li>
   <li>
-    <h3 id="ais-for-games-part-i"><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></h3>
+    <h3 id="ais-for-games-part-i-1"><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></h3>
     <p>I want to create AIs that can play games using neural networks. To start off, I coded up TicTacToe and then had an AI play it using a brute force algorithm. The code for this is available on <a href="https://github.com/Lovkush-A/games">github</a>.</p>
   </li>
   <li>
@@ -79,14 +48,4 @@ and GitHub Pages.</p>
   </li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

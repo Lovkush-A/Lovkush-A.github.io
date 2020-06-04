@@ -1,41 +1,9 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>AIs for Games, Part I</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>AIs for Games, Part I</h1>
-<p>20 May 2020</p>
-
-<p>I want to create AIs that can play games using neural networks. To start off, I coded up TicTacToe and then had an AI play it using a brute force algorithm. The code for this is available on <a href="https://github.com/Lovkush-A/games">github</a>.</p>
+I"¡<p>Here I created an algorithm and the code to search through the game-tree to a given maximum depth. This has been written for the game Pentago specifically. The code seems to work, but is highly inefficient.</p>
 
 <h2 id="other-posts-in-series">Other posts in series</h2>
 
 <ul>
-  <li><a href="/2020/06/04/games2.html">AIs for Games, Part II</a></li>
+  <li><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></li>
 </ul>
 
 <h2 id="the-ai-in-action">The AI in Action</h2>
@@ -69,14 +37,6 @@
   <li>Coding up a neural network to create a heuristic function</li>
 </ul>
 
+<p>It takes several seconds to do depth 2 search, and on the order of hours for depth 3 search. This is</p>
 
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

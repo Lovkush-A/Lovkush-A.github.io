@@ -1,0 +1,33 @@
+I"�	<p>Here I created an algorithm and the code to search through the game-tree to a given maximum depth. This has been written for the game Pentago specifically. The code seems to work, but is highly inefficient.</p>
+
+<h2 id="other-posts-in-series">Other posts in series</h2>
+
+<ul>
+  <li><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></li>
+</ul>
+
+<h2 id="the-algorithm">The algorithm</h2>
+<p>In my last post, I said I wanted to code up an alpha-beta pruning algorithm. (See this [CS50 Intro to AI] lecture for background on tree-based search and alpha-beta pruning). Over the past couple of weeks, I have been thinking about exactly how the algorithm would work and how I would code it up, and it was surprisingly tricky. I therefore decided to just focus on creating an algorithm that would search through a game-tree for up to some maximum depth before thinking about the pruning.</p>
+
+<p>The algorithm should determine the ‘value’ of the current board state and the move that would achieve that value. A value of 1 means that Player 1 will win (with perfect play) and a value of 0 means that Player 0 will win (with perfect play). A value in the middle indicates which player is more likely to win, as judged by the algorithm.</p>
+
+<p>The general idea of the algorithm is straightforward:</p>
+<ol>
+  <li>Given a board position, create an initial node and add it to the frontier.</li>
+  <li>While the initial node does not have a value, pick a node from the frontier and do the following
+ a. Check if the game has ended. If so, determine who won, and set the value appropriately. Then update the value of parent nodes appropriately.
+ b. Check if the depth of the node is the maximum depth. If so, then estimate the value of the position. For now, I just set this as 0.5, but in future, this will be determined via a neural network. Then update the value of parent nodes appropriately.
+ c. Create a list of legal moves and possible board positions arising from this node. Create new nodes and add them to the frontier.</li>
+</ol>
+
+<h2 id="an-example">An example</h2>
+<p><img src="/assets/images/games_13.png" alt="image" /></p>
+
+<h2 id="the-code">The code</h2>
+<p>The code, at this stage of project, can be found on <a href="https://github.com/Lovkush-A/games/tree/e8a8e0afe6d25030d82cf0f0269c5edab625e463">github</a>.</p>
+
+<h2 id="thoughts">Thoughts</h2>
+
+<p>It takes several seconds to do depth 2 search, and on the order of hours for depth 3 search. This is</p>
+
+:ET
