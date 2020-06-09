@@ -1,0 +1,129 @@
+I"�<p>I describe the various ways I made the algorithm from Part II more efficient. These resulted in big improvements in the efficiency.</p>
+
+<h2 id="other-posts-in-series">Other posts in series</h2>
+
+<ul>
+  <li>
+    <p><a href="/2020/06/04/games2.html">AIs for Games, Part II</a></p>
+  </li>
+  <li>
+    <p><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></p>
+  </li>
+</ul>
+
+<h2 id="performance-before-any-optimisations">Performance before any optimisations</h2>
+<p>I created a few boards and timed how long it took the algorithm to run a depth-2 search on these boards, starting with both Player 0 and Player 1. An image showing the boards used is at the end of the post.  The results are:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.59</li>
+  <li>Board: 0, Player: 1, Time taken: 1.58</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00117</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00103</li>
+  <li>Board: 2, Player: 0, Time taken: 5.04</li>
+  <li>Board: 2, Player: 1, Time taken: 4.94</li>
+  <li>Board: 3, Player: 0, Time taken: 29.2</li>
+  <li>Board: 3, Player: 1, Time taken: 32.0</li>
+  <li>Board: 4, Player: 0, Time taken: 9.55</li>
+  <li>Board: 4, Player: 1, Time taken: 9.25</li>
+</ul>
+
+<p>I also tried running a depth-3 search on Board 4 for Player 1 (because Player 1 can find a winning move with this depth), but it did not finish running even after a couple of hours of running.</p>
+
+<h2 id="the-optimisations">The optimisations</h2>
+<p>I made several optimisations. I describe them here chronologically, i.e., in the order I tried implementing them.</p>
+
+<h3 id="alpha-beta-pruning">Alpha-beta pruning</h3>
+<p>There are situations where a board position does not need to be analysed, because based on the boards we have already analysed, this board position will definitely not be chosen in optimal player. This resulted in the following times:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.34</li>
+  <li>Board: 0, Player: 1, Time taken: 1.39</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00120</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00104</li>
+  <li>Board: 2, Player: 0, Time taken: 5.28</li>
+  <li>Board: 2, Player: 1, Time taken: 4.61</li>
+  <li>Board: 3, Player: 0, Time taken: 26.1</li>
+  <li>Board: 3, Player: 1, Time taken: 29.4</li>
+  <li>Board: 4, Player: 0, Time taken: 8.62</li>
+  <li>Board: 4, Player: 1, Time taken: 8.28</li>
+</ul>
+
+<p>This was not a significant improvement in the times. I was surprised by this. I decided to run cProfile to try to determine why there was not a significant time-save. It seemed to be that the process of creating new boards was taking up a lot of time - and I was only pruning a board after the board was created. I needed to prune before the board was created.</p>
+
+<p>To achieve this, I had to significantly re-structure the whole program, removing the frontier and instead writing the main function <code class="highlighter-rouge">find_move</code> recursively. The resulting times were a significant improvement:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.07</li>
+  <li>Board: 0, Player: 1, Time taken: 1.06</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00118</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00102</li>
+  <li>Board: 2, Player: 0, Time taken: 1.90</li>
+  <li>Board: 2, Player: 1, Time taken: 1.86</li>
+  <li>Board: 3, Player: 0, Time taken: 5.33</li>
+  <li>Board: 3, Player: 1, Time taken: 5.41</li>
+  <li>Board: 4, Player: 0, Time taken: 2.98</li>
+  <li>Board: 4, Player: 1, Time taken: 2.90</li>
+</ul>
+
+<p>Phew! It was satisfying to see the times drop so much, and this motivated me to keep going.</p>
+
+<h3 id="stop-if-winning-move-found">Stop if winning move found</h3>
+<p>If a winning move was found in a current board position, there is no need to continue analysing this position, so can stop this early. Pruning does not detect this (at least, not how I implemented it. This could be a sign I did it wrong…), so I had to manually add this. This resulted in further improvements:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.09</li>
+  <li>Board: 0, Player: 1, Time taken: 1.11</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00104</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00119</li>
+  <li>Board: 2, Player: 0, Time taken: 0.324</li>
+  <li>Board: 2, Player: 1, Time taken: 0.344</li>
+  <li>Board: 3, Player: 0, Time taken: 0.141</li>
+  <li>Board: 3, Player: 1, Time taken: 0.897</li>
+  <li>Board: 4, Player: 0, Time taken: 3.12</li>
+  <li>Board: 4, Player: 1, Time taken: 2.93</li>
+</ul>
+
+<p>I also tried running the depth-3 search on board 4, and to my surprise it ended in under a minute!</p>
+
+<ul>
+  <li>Board: 4, Depth 3, Time taken: 59.1</li>
+</ul>
+
+<p>Note this would not be representative of a generic depth-3 search, because the winning move is found about 1/6 of the way into the full search.</p>
+
+<h3 id="lists-within-lists">Lists within lists</h3>
+<p>Running cProfile revealed that having nested lists to encode the board slows things down considerably, so I re-wrote the program so that the board was represented by a single list. I was worried this would take a lot of effort, but fortunately it consisted of replacing <code class="highlighter-rouge">board[i][j]</code> with <code class="highlighter-rouge">board[6*i + j]</code>, and other similar simple changes.  This halved the times:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.407</li>
+  <li>Board: 0, Player: 1, Time taken: 0.411</li>
+  <li>Board: 1, Player: 0, Time taken: 0.000520</li>
+  <li>Board: 1, Player: 1, Time taken: 0.000450</li>
+  <li>Board: 2, Player: 0, Time taken: 0.175</li>
+  <li>Board: 2, Player: 1, Time taken: 0.161</li>
+  <li>Board: 3, Player: 0, Time taken: 0.0645</li>
+  <li>Board: 3, Player: 1, Time taken: 0.424</li>
+  <li>Board: 4, Player: 0, Time taken: 1.41</li>
+  <li>Board: 4, Player: 1, Time taken: 1.41</li>
+  <li>Board: 4, Depth 3, Time taken: 30.7</li>
+</ul>
+
+<h2 id="the-code">The code</h2>
+<p>The code, at this stage of project, can be found on <a href="https://github.com/Lovkush-A/games/tree/94649838b4e348772a12dbf13c5954b665354371">github</a>.</p>
+
+<h2 id="the-boards-used-for-testing">The boards used for testing</h2>
+<p><img src="/assets/images/games_31.png" alt="image" /></p>
+
+<h2 id="areas-of-improvement">Areas of improvement</h2>
+<p>The algorithm is highly inefficient. It takes roughly 10-50 seconds to do depth-2 searches, and on the order of hours for depth-3 search. This is way too long! The number of possible positions after 3 moves is roughly a few million, so that shouldn’t take hours to sort through.</p>
+
+<p>There are many inefficiencies I am aware of and will fix them for my next post. Examples include:</p>
+<ul>
+  <li>Dealing with repeat positions. Right now, I only avoid positions that repeat if they arise from the same parent.</li>
+  <li>I currently use a list to track which positions have been visited in the search, to check for repeats. This is less efficient than a set, but I can’t use arrays in sets and all my boards are coded as arrays. I will try changing everything to tuples.</li>
+  <li>If a winning/losing sequence is found, it will keep on searching. This is not necessarily a bad thing, because we might want to analyse all the lines, but it definitely slows things down.</li>
+  <li>Not using alpha-beta pruning, yet.</li>
+  <li>Not doing any time analysis. I will run cProfile to systematically find inefficiencies.</li>
+</ul>
+
+:ET

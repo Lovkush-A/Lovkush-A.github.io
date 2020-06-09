@@ -1,47 +1,42 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>AIs for Games, Part II</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>AIs for Games, Part II</h1>
-<p>04 Jun 2020</p>
-
-<p>Here I created an algorithm and the code to search through the game-tree to a given maximum depth. This has been written for the game Pentago specifically. The code seems to work, but is highly inefficient.</p>
+I"Ö<p>I describe the various ways I made the algorithm from Part II more efficient. These resulted in big improvements in the efficiency.</p>
 
 <h2 id="other-posts-in-series">Other posts in series</h2>
 
 <ul>
   <li>
-    <p><a href="/2020/06/09/games3.html">AIs for Games, Part III</a></p>
+    <p><a href="/2020/06/04/games2.html">AIs for Games, Part II</a></p>
   </li>
   <li>
     <p><a href="/2020/05/20/games1.html">AIs for Games, Part I</a></p>
   </li>
 </ul>
+
+<h2 id="performance-before-any-optimisations">Performance before any optimisations</h2>
+<p>I created a few boards and timed how long it took the algorithm to run a depth-2 search on these boards, starting with both Player 0 and Player 1. An image showing the boards used is at the end of the post.  The results are:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.5973551273345947</li>
+  <li>Board: 0, Player: 1, Time taken: 1.5876989364624023</li>
+  <li>Board: 1, Player: 0, Time taken: 0.0011789798736572266</li>
+  <li>Board: 1, Player: 1, Time taken: 0.0010318756103515625</li>
+  <li>Board: 2, Player: 0, Time taken: 5.049747943878174</li>
+  <li>Board: 2, Player: 1, Time taken: 4.941879034042358</li>
+  <li>Board: 3, Player: 0, Time taken: 29.29101586341858</li>
+  <li>Board: 3, Player: 1, Time taken: 32.09774899482727</li>
+  <li>Board: 4, Player: 0, Time taken: 9.555429935455322</li>
+  <li>Board: 4, Player: 1, Time taken: 9.259257078170776</li>
+</ul>
+
+<p>I also tried running a depth-3 search on Board 4 for Player 1 (because Player 1 can find a winning move with this depth), but it did not finish running even after a couple of hours of running.</p>
+
+<h2 id="description-of-optimisations">Description of optimisations</h2>
+<p>I made several optimisations. I describe them here chronologically, i.e., in the order I tried implementing them.</p>
+
+<h3 id="alpha-beta-pruning">Alpha-beta pruning.</h3>
+<p>There are situations where a board position does not need to be analysed, because we have already determined that a</p>
+
+<h2 id="the-boards-used-for-testing">The boards used for testing</h2>
+<p><img src="/assets/images/games_31.png" alt="image" /></p>
 
 <h2 id="the-algorithm">The algorithm</h2>
 <p>In my last post, I said I wanted to code up an alpha-beta pruning algorithm. (See this <a href="https://youtu.be/WbzNRTTrX0g">CS50 Intro to AI</a> lecture for background on tree-based search and alpha-beta pruning). Over the past couple of weeks, I have been thinking about exactly how the algorithm would work and how I would code it up, and it was surprisingly tricky. I therefore decided to just focus on creating an algorithm that would search through a game-tree up to some maximum depth, but in a way that I could add in the pruning.</p>
@@ -96,14 +91,4 @@
   <li>Not doing any time analysis. I will run cProfile to systematically find inefficiencies.</li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET

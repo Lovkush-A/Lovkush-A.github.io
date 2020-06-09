@@ -1,40 +1,9 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Blog</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-                	class = "current"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1 id="blog">Blog</h1>
+I"ü<h1 id="blog">Blog</h1>
 
 <ul>
   <li>
     <h3 id="ais-for-games-part-iii"><a href="/2020/06/09/games3.html">AIs for Games, Part III</a></h3>
-    <p>I describe the various ways I made the algorithm from Part II more efficient. These resulted in big improvements in the efficiency.</p>
+    <p>I describe the various ways I made the algorithm from Part II more efficient. This results in improvements of many orders of magnitude.</p>
   </li>
   <li>
     <h3 id="ais-for-games-part-ii"><a href="/2020/06/04/games2.html">AIs for Games, Part II</a></h3>
@@ -83,14 +52,4 @@ and GitHub Pages.</p>
   </li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
