@@ -1,0 +1,73 @@
+I"�<p>In light of the current prominence of BlackLivesMatter, I decided to investigate crime in relation to race. Here I describe how I collected the data I will be analysing.</p>
+
+<h2 id="other-posts-in-series">Other posts in series</h2>
+
+<h2 id="introduction">Introduction</h2>
+<p>In both traditional and social media, the issue of racial discrimination within the police is a hot topic. I decided to investigate this issue and better understand the statistics that go around.</p>
+
+<h2 id="stop-and-search">Stop and search</h2>
+<p>I googled ‘crime data’ and one of the top results was <a href="data.police.uk">data.police.uk</a>, which seems like a reliable source of data for crime in the UK. With regard to race, the only data available on this website is about ‘stop-and-search’, as opposed to prison data, for example.</p>
+
+<p>In the UK, a police officer has the legal authority to stop and search you if they have ‘reasonable grounds’ to suspect you’re involved in a crime, e.g. carrying an illegal item.</p>
+
+<h3 id="tidying-up-and-fixing-a-bug">Tidying up and fixing a “bug”</h3>
+<p>My code was becoming untidy (I was not using version control properly, and instead was creating multiple versions of functions in the same file) so I tidied up all the code. While doing this, I discovered that I did not correctly update the prune function during the ‘Lists within lists’ step: I was only pruning boards of at least depth 2, when it could be pruning board of depth 1.  I made the necessary tweak, resulting in the following times:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.0896</li>
+  <li>Board: 0, Player: 1, Time taken: 0.0682</li>
+  <li>Board: 1, Player: 0, Time taken: 0.000272</li>
+  <li>Board: 1, Player: 1, Time taken: 0.000204</li>
+  <li>Board: 2, Player: 0, Time taken: 0.100</li>
+  <li>Board: 2, Player: 1, Time taken: 0.0539</li>
+  <li>Board: 3, Player: 0, Time taken: 0.313</li>
+  <li>Board: 3, Player: 1, Time taken: 1.13</li>
+  <li>Board: 4, Player: 0, Time taken: 0.204</li>
+  <li>Board: 4, Player: 1, Time taken: 0.310</li>
+  <li>Board: 4, Depth 3, Time taken: 3.18</li>
+</ul>
+
+<p>Woohoo! What big progress. What used to take hours now only takes 3 seconds.</p>
+
+<h3 id="duplicate-board-positions">Duplicate board positions</h3>
+<p>The last thing I wanted to try was dealing with repeat positions. Previously I only skipped these if the same position occurred and they had same parent. But now I wanted to have a way of skipping board positions regardless of where they were in the game-tree. This took many hours to get correct, because my first attempt caused the algorithm to produce sub-optimal moves, and I had no idea why.</p>
+
+<p>The error was that when I pruned a board, I would finalise the board’s value, though the board was not fully analysed. Then, when the board occurred somewhere else in the tree, I would use this incomplete value and miss out all the analysis that was pruned the first time around.</p>
+
+<p>After fixing the bug, the new times are:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.2888009548187256</li>
+  <li>Board: 0, Player: 1, Time taken: 0.15045881271362305</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00028705596923828125</li>
+  <li>Board: 1, Player: 1, Time taken: 0.0002300739288330078</li>
+  <li>Board: 2, Player: 0, Time taken: 0.0822603702545166</li>
+  <li>Board: 2, Player: 1, Time taken: 0.03888416290283203</li>
+  <li>Board: 3, Player: 0, Time taken: 0.30017614364624023</li>
+  <li>Board: 3, Player: 1, Time taken: 0.7593698501586914</li>
+  <li>Board: 4, Player: 0, Time taken: 0.3503570556640625</li>
+  <li>Board: 4, Player: 1, Time taken: 0.3380570411682129</li>
+  <li>Board: 4, Depth 3, Time taken: 3.19</li>
+</ul>
+
+<p>The times are not always better, and some are worse.</p>
+
+<h2 id="next-steps-and-final-thoughts">Next steps and final thoughts</h2>
+<p>The next step is to introduce neural networks. A brief google search reveals that min-max is not appropriate and that I should have been using reinforcement learning. Doh! In the back of my mind, I was curious as to how the neural network could learn the heuristic function; what would the loss/error be that it would minimise?</p>
+
+<p>Though the optimisation of the min-max algorithm is incomplete (e.g. I do not understand why the latest version is not faster than the previous version), I will end it here. This is because I have already spent a couple of days on this, I have already learnt from this, and it is not necessary for the bigger goal of developing a neural network.</p>
+
+<p>Some final takeaways:</p>
+<ul>
+  <li>I should have sketched out a plan of the whole project. Though I had basic knowledge of neural networks, I should have researched a bit more and found out that min-max is not appropriate for neural networks.</li>
+  <li>Be more thorough with testing. It makes spotting bugs easier and quicker.</li>
+  <li>Seed random number generators. I used used random heuristics (to see effects of pruning), but I did not seed them. This means the times above are not fair comparisons, as some random numbers could have lead to more pruning than others.</li>
+  <li>Use proper version control. My code got hideous at one point. At least now I have a better sense of the workflow of git.</li>
+</ul>
+
+<h2 id="the-code">The code</h2>
+<p>The code, at this stage of project, can be found on <a href="https://github.com/Lovkush-A/games/tree/94649838b4e348772a12dbf13c5954b665354371">github</a>.</p>
+
+<h2 id="the-boards-used-for-testing">The boards used for testing</h2>
+<p><img src="/assets/images/games_31.png" alt="image" /></p>
+:ET

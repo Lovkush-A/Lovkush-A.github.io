@@ -1,0 +1,188 @@
+I"j/<p>In light of the current prominence of BlackLivesMatter, I decided to investigate crime in relation to race. Here I describe how I collected the data I will be analysing.</p>
+
+<h2 id="other-posts-in-series">Other posts in series</h2>
+
+<h2 id="introduction">Introduction</h2>
+<p>In both traditional and social media, the issue of racial discrimination in the police force</p>
+
+<h2 id="performance-before-any-optimisations">Performance before any optimisations</h2>
+<p>I created a few boards and timed how long it took the algorithm to run a depth-2 search on these boards, starting with both Player 0 and Player 1. An image showing the boards used is at the end of the post.  The results are:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.59</li>
+  <li>Board: 0, Player: 1, Time taken: 1.58</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00117</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00103</li>
+  <li>Board: 2, Player: 0, Time taken: 5.04</li>
+  <li>Board: 2, Player: 1, Time taken: 4.94</li>
+  <li>Board: 3, Player: 0, Time taken: 29.2</li>
+  <li>Board: 3, Player: 1, Time taken: 32.0</li>
+  <li>Board: 4, Player: 0, Time taken: 9.55</li>
+  <li>Board: 4, Player: 1, Time taken: 9.25</li>
+</ul>
+
+<p>I also tried running a depth-3 search on Board 4 for Player 1 (because Player 1 can find a winning move with this depth), but it did not finish running even after a couple of hours of running.</p>
+
+<h2 id="the-optimisations">The optimisations</h2>
+<p>I made several optimisations. I describe them here chronologically, i.e., in the order I tried implementing them.</p>
+
+<h3 id="alpha-beta-pruning">Alpha-beta pruning</h3>
+<p>There are situations where a board position does not need to be analysed, because based on the boards we have already analysed, this board position will definitely not be chosen in optimal player. This resulted in the following times:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.34</li>
+  <li>Board: 0, Player: 1, Time taken: 1.39</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00120</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00104</li>
+  <li>Board: 2, Player: 0, Time taken: 5.28</li>
+  <li>Board: 2, Player: 1, Time taken: 4.61</li>
+  <li>Board: 3, Player: 0, Time taken: 26.1</li>
+  <li>Board: 3, Player: 1, Time taken: 29.4</li>
+  <li>Board: 4, Player: 0, Time taken: 8.62</li>
+  <li>Board: 4, Player: 1, Time taken: 8.28</li>
+</ul>
+
+<p>This was not a significant improvement in the times. I was surprised by this. I decided to run cProfile to try to determine why there was not a significant time-save. It seemed to be that the process of creating new boards was taking up a lot of time - and I was only pruning a board after the board was created. I needed to prune before the board was created.</p>
+
+<p>To achieve this, I had to significantly re-structure the whole program, removing the frontier and instead writing the main function <code class="highlighter-rouge">find_move</code> recursively. The resulting times were a significant improvement:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.07</li>
+  <li>Board: 0, Player: 1, Time taken: 1.06</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00118</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00102</li>
+  <li>Board: 2, Player: 0, Time taken: 1.90</li>
+  <li>Board: 2, Player: 1, Time taken: 1.86</li>
+  <li>Board: 3, Player: 0, Time taken: 5.33</li>
+  <li>Board: 3, Player: 1, Time taken: 5.41</li>
+  <li>Board: 4, Player: 0, Time taken: 2.98</li>
+  <li>Board: 4, Player: 1, Time taken: 2.90</li>
+</ul>
+
+<p>Phew! It was satisfying to see the times drop so much, and this motivated me to keep going.</p>
+
+<h3 id="stop-if-winning-move-found">Stop if winning move found</h3>
+<p>If a winning move was found in a current board position, there is no need to continue analysing this position, so can stop this early. Pruning does not detect this (at least, not how I implemented it. This could be a sign I did it wrong…), so I had to manually add this. This resulted in further improvements:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 1.09</li>
+  <li>Board: 0, Player: 1, Time taken: 1.11</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00104</li>
+  <li>Board: 1, Player: 1, Time taken: 0.00119</li>
+  <li>Board: 2, Player: 0, Time taken: 0.324</li>
+  <li>Board: 2, Player: 1, Time taken: 0.344</li>
+  <li>Board: 3, Player: 0, Time taken: 0.141</li>
+  <li>Board: 3, Player: 1, Time taken: 0.897</li>
+  <li>Board: 4, Player: 0, Time taken: 3.12</li>
+  <li>Board: 4, Player: 1, Time taken: 2.93</li>
+</ul>
+
+<p>I also tried running the depth-3 search on board 4, and to my surprise it ended in under a minute!</p>
+
+<ul>
+  <li>Board: 4, Depth 3, Time taken: 59.1</li>
+</ul>
+
+<p>Note this would not be representative of a generic depth-3 search, because the winning move is found about 1/6 of the way into the full search.</p>
+
+<h3 id="lists-within-lists">Lists within lists</h3>
+<p>Running cProfile revealed that having nested lists to encode the board slows things down considerably, so I re-wrote the program so that the board was represented by a single list. I was worried this would take a lot of effort, but fortunately it consisted of replacing <code class="highlighter-rouge">board[i][j]</code> with <code class="highlighter-rouge">board[6*i + j]</code>, and other similar simple changes.  This halved the times:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.407</li>
+  <li>Board: 0, Player: 1, Time taken: 0.411</li>
+  <li>Board: 1, Player: 0, Time taken: 0.000520</li>
+  <li>Board: 1, Player: 1, Time taken: 0.000450</li>
+  <li>Board: 2, Player: 0, Time taken: 0.175</li>
+  <li>Board: 2, Player: 1, Time taken: 0.161</li>
+  <li>Board: 3, Player: 0, Time taken: 0.0645</li>
+  <li>Board: 3, Player: 1, Time taken: 0.424</li>
+  <li>Board: 4, Player: 0, Time taken: 1.41</li>
+  <li>Board: 4, Player: 1, Time taken: 1.41</li>
+  <li>Board: 4, Depth 3, Time taken: 30.7</li>
+</ul>
+
+<h3 id="checking-if-the-game-is-over">Checking if the game is over</h3>
+<p>Running cProfile again showed that the new bottle-neck was checking if the game had ended. This involved looping through the set of all possible winning lines, and checking to see if Player 0 or Player 1 occupied all the positions in each line.</p>
+
+<p>Originally, I had one for-loop to check if Player 1 won, then another to check if Player 0 won. I changed this to have a single loop, and for each line check if Player 1 or Player 0 won. This resulted in another big chunk of time-saving.</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.292</li>
+  <li>Board: 0, Player: 1, Time taken: 0.283</li>
+  <li>Board: 1, Player: 0, Time taken: 0.000499</li>
+  <li>Board: 1, Player: 1, Time taken: 0.000334</li>
+  <li>Board: 2, Player: 0, Time taken: 0.101</li>
+  <li>Board: 2, Player: 1, Time taken: 0.107</li>
+  <li>Board: 3, Player: 0, Time taken: 0.0359</li>
+  <li>Board: 3, Player: 1, Time taken: 0.261</li>
+  <li>Board: 4, Player: 0, Time taken: 0.943</li>
+  <li>Board: 4, Player: 1, Time taken: 0.915</li>
+  <li>Board: 4, Depth 3, Time taken: 21.6</li>
+</ul>
+
+<p>Checking cProfile showed that I had halved the time to check if the game had ended, but it was still the biggest bottle neck.</p>
+
+<p>I then tried to re-design the program to cut down further, but to no avail. For example, I tried to group the set of lines into groups that could be ruled out together, e.g. if I know that position <code class="highlighter-rouge">(2,2)</code> in the board is empty, that rules out 7 of the lines. It will be interesting to know if there is a more efficient way to check if the game has ended!</p>
+
+<h3 id="tidying-up-and-fixing-a-bug">Tidying up and fixing a “bug”</h3>
+<p>My code was becoming untidy (I was not using version control properly, and instead was creating multiple versions of functions in the same file) so I tidied up all the code. While doing this, I discovered that I did not correctly update the prune function during the ‘Lists within lists’ step: I was only pruning boards of at least depth 2, when it could be pruning board of depth 1.  I made the necessary tweak, resulting in the following times:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.0896</li>
+  <li>Board: 0, Player: 1, Time taken: 0.0682</li>
+  <li>Board: 1, Player: 0, Time taken: 0.000272</li>
+  <li>Board: 1, Player: 1, Time taken: 0.000204</li>
+  <li>Board: 2, Player: 0, Time taken: 0.100</li>
+  <li>Board: 2, Player: 1, Time taken: 0.0539</li>
+  <li>Board: 3, Player: 0, Time taken: 0.313</li>
+  <li>Board: 3, Player: 1, Time taken: 1.13</li>
+  <li>Board: 4, Player: 0, Time taken: 0.204</li>
+  <li>Board: 4, Player: 1, Time taken: 0.310</li>
+  <li>Board: 4, Depth 3, Time taken: 3.18</li>
+</ul>
+
+<p>Woohoo! What big progress. What used to take hours now only takes 3 seconds.</p>
+
+<h3 id="duplicate-board-positions">Duplicate board positions</h3>
+<p>The last thing I wanted to try was dealing with repeat positions. Previously I only skipped these if the same position occurred and they had same parent. But now I wanted to have a way of skipping board positions regardless of where they were in the game-tree. This took many hours to get correct, because my first attempt caused the algorithm to produce sub-optimal moves, and I had no idea why.</p>
+
+<p>The error was that when I pruned a board, I would finalise the board’s value, though the board was not fully analysed. Then, when the board occurred somewhere else in the tree, I would use this incomplete value and miss out all the analysis that was pruned the first time around.</p>
+
+<p>After fixing the bug, the new times are:</p>
+
+<ul>
+  <li>Board: 0, Player: 0, Time taken: 0.2888009548187256</li>
+  <li>Board: 0, Player: 1, Time taken: 0.15045881271362305</li>
+  <li>Board: 1, Player: 0, Time taken: 0.00028705596923828125</li>
+  <li>Board: 1, Player: 1, Time taken: 0.0002300739288330078</li>
+  <li>Board: 2, Player: 0, Time taken: 0.0822603702545166</li>
+  <li>Board: 2, Player: 1, Time taken: 0.03888416290283203</li>
+  <li>Board: 3, Player: 0, Time taken: 0.30017614364624023</li>
+  <li>Board: 3, Player: 1, Time taken: 0.7593698501586914</li>
+  <li>Board: 4, Player: 0, Time taken: 0.3503570556640625</li>
+  <li>Board: 4, Player: 1, Time taken: 0.3380570411682129</li>
+  <li>Board: 4, Depth 3, Time taken: 3.19</li>
+</ul>
+
+<p>The times are not always better, and some are worse.</p>
+
+<h2 id="next-steps-and-final-thoughts">Next steps and final thoughts</h2>
+<p>The next step is to introduce neural networks. A brief google search reveals that min-max is not appropriate and that I should have been using reinforcement learning. Doh! In the back of my mind, I was curious as to how the neural network could learn the heuristic function; what would the loss/error be that it would minimise?</p>
+
+<p>Though the optimisation of the min-max algorithm is incomplete (e.g. I do not understand why the latest version is not faster than the previous version), I will end it here. This is because I have already spent a couple of days on this, I have already learnt from this, and it is not necessary for the bigger goal of developing a neural network.</p>
+
+<p>Some final takeaways:</p>
+<ul>
+  <li>I should have sketched out a plan of the whole project. Though I had basic knowledge of neural networks, I should have researched a bit more and found out that min-max is not appropriate for neural networks.</li>
+  <li>Be more thorough with testing. It makes spotting bugs easier and quicker.</li>
+  <li>Seed random number generators. I used used random heuristics (to see effects of pruning), but I did not seed them. This means the times above are not fair comparisons, as some random numbers could have lead to more pruning than others.</li>
+  <li>Use proper version control. My code got hideous at one point. At least now I have a better sense of the workflow of git.</li>
+</ul>
+
+<h2 id="the-code">The code</h2>
+<p>The code, at this stage of project, can be found on <a href="https://github.com/Lovkush-A/games/tree/94649838b4e348772a12dbf13c5954b665354371">github</a>.</p>
+
+<h2 id="the-boards-used-for-testing">The boards used for testing</h2>
+<p><img src="/assets/images/games_31.png" alt="image" /></p>
+:ET
