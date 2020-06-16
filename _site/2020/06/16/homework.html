@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    	<meta charset="utf-8">
+		<title>Do students do their homework last minute?</title>
+    	<!-- link to main stylesheet -->
+		<link rel="stylesheet" href="/assets/css/styles.css">
+	</head>
+	<body>
+    	<nav>
+    <ul>
+    
+        <li><a
+                href="/"
+            	
+            >
+            Home
+        </a></li>
+    
+        <li><a
+                href="/blog/"
+            	
+            >
+            Blog
+        </a></li>
+    
+    </ul>
+</nav>
+        <div class="container">
+            <h1>Do students do their homework last minute?</h1>
+<p>16 Jun 2020</p>
+
+<p>During my previous job teaching mathematics at the University of Leicester, I did a project to investigate whether students did their homework last minute, which involved some data processing in R.</p>
+
+<h2 id="introduction">Introduction</h2>
+<p>In the STEM Foundation Year at the University of Leicester, we used the e-assessement system Numbas. This system recorded enough information for me to be able to investigate when students did their homework.</p>
+
+<p>To help understand the charts that will come below, it will help to know how the assessment was structured.</p>
+
+<ul>
+  <li>There were two semesters.
+    <ul>
+      <li>In Semester 1, we taught Physics 1, Physics 2 and Maths 1.</li>
+      <li>In Semester 2, we taught Physics 3, Physics 4 and Maths 2.</li>
+    </ul>
+  </li>
+  <li>The physics modules were structured as follows:
+    <ul>
+      <li>Each module lasted half a semester.</li>
+      <li>Each module had 4 weekly e-assessments, made available on Monday and had a deadline of 10am on the Monday after.</li>
+      <li>Various other assessments whose details do not matter.</li>
+    </ul>
+  </li>
+  <li>The maths modules were structured as follows:
+    <ul>
+      <li>Each module lasted a whole semester.</li>
+      <li>Each module had 8 weekly e-assessments, made available each Monday.</li>
+      <li>For Maths 1, there was a single deadline which was the weekend before exams.</li>
+      <li>For Maths 2, there were weekly deadlines like in Physics.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>The reason for the inconsistent structure is because we were trying to find out what works.</p>
+
+<h2 id="collecting-and-cleaning-the-data">Collecting and cleaning the data</h2>
+<p>As mentioned above, we used the Numbas e-assessment system which recorded lots of data, including when students attempted their work.  A colleague was in charge of maintaining the system, so I asked them to extract the data for this little project. They did this using a SQL query, and passed the data to me as a csv file.</p>
+
+<p>I then cleaned the data. This involved:</p>
+<ul>
+  <li>Removing entries that did not correspond to my students.</li>
+  <li>Determining which assessment each entry corresponded to. This was trickier than expected, because the staff on our team used different naming conventions and because the system produced three different ids for each assessment.</li>
+  <li>Deciding how to deal with fact that we allowed students to attempt the assessment multiple times. In the end, I decided to pick the first attempt out of all these; it had negligible impact on the final charts.</li>
+  <li>Deciding how to deal with fact that a student could start an assessment on one day, but finish it later. I decided to pick the time a student first opened an assessment, which I called ‘Start Time’.</li>
+</ul>
+
+<p>On the technical side, I used R.</p>
+<ul>
+  <li>I learnt some R by working through <a href="https://r4ds.had.co.nz/">R for Data Science</a>, which is an excellent online book that I highly recommended.</li>
+  <li>For this project, the key tools I used were <a href="https://r4ds.had.co.nz/tibbles.html">tibbles</a>, <a href="https://r4ds.had.co.nz/pipes.html">piping</a> and <a href="https://ggplot2.tidyverse.org/">ggplot2</a>.</li>
+  <li>The other noteworthy technical aspect of this project was getting the x-axis, representing time, to appear just as I wanted. I remember this took significant effort, banging my head over the table to understand POSIXct and POSIClt.</li>
+</ul>
+
+<h2 id="the-charts">The charts</h2>
+<p>Below are the charts for the Physics modules. The x-axis shows the day a student opened an e-assessment and the y-axis shows the number of student who started on each day. The different colours correspond to the different assessments.</p>
+
+<p><img src="/assets/images/homework1.png" alt="image" />
+<img src="/assets/images/homework2.png" alt="image" /></p>
+
+<p>Physics 1, 2 and 4 all have the same patterns.</p>
+<ul>
+  <li>A good chunk of students open the e-assessment before the weekend.</li>
+  <li>The modal day to open the e-assessment is Sunday, the day before the deadline.</li>
+  <li>Several students open the e-assessment on Monday (so after midnight on Sunday).</li>
+  <li>The bars are shorter in the Physics 2 and Physics 4 charts because fewer students do those modules.</li>
+</ul>
+
+<p>Physics 3 has a different pattern. The first assessment has the same shape as in the other three modules. The other three assessments are flat for a few weeks and then all bunch up in the week beginning Monday 11th Feb. The reason is that at the end of the first week of Physics 3, we extended the deadline for all the assessments to 10am on Monday 18th Feb. (We did this to account for unforeseen circumstances).</p>
+
+<p><br />
+<br />
+Below are a sample of charts showing the breakdown of timings during Sunday and Monday.</p>
+
+<p><img src="/assets/images/homework3.png" alt="image" /></p>
+
+<p>I do not think there is anything particularly noteworthy in these charts. The main pattern is that most people who started the work on Sunday did so after 6pm. The thing which struck me was that for each assessment, there were several students who started the work between 3am and 9am.</p>
+
+<p>As a result of this data, the director of the Foundation Year decided to change the deadlines from 10am on Monday to 10pm on Sunday.</p>
+
+<p><br />
+<br />
+Below are the charts for the two maths modules.</p>
+
+<p><img src="/assets/images/homework4.png" alt="image" /></p>
+
+<p>Recall that in Maths 1, there was a single deadline for all the assessments, which was the weekend before exam week.</p>
+<ul>
+  <li>In the first half of the semester, there is a decent chunk of students starting the e-assessments.</li>
+  <li>In the second half, engagement drops significantly. My explanation for this is that the e-assessments for Physics 2 were considerably longer/harder than those of Physics 1, but there are likely various factors.</li>
+  <li>A lot of work was done over the Christmas break. To my surprise, a few students left all the work to be done on the final weekend!</li>
+</ul>
+
+<p>Recall that Maths 2 had weekly deadlines. Recall also that Maths 2 runs concurrently with Physics 3 and Physics 4.</p>
+<ul>
+  <li>When we extended the deadline in Physics 3, we also had to do it for Maths 2.</li>
+  <li>Like in Physics 4, the deadlines for second half of Maths 2 were weekly.</li>
+  <li>Hence, the first half of Maths 2 resembles Physics 3, and the second half of Maths 2 resembles Physics 4.</li>
+</ul>
+
+<h2 id="conclusions">Conclusions</h2>
+<p>Many people who see this will say ‘This is obvious, what is the point?’.  There are two main points.</p>
+<ul>
+  <li>First, it is good to have quantitative data. It provides clearer understanding and also allows us to measure changes from one year to the next.</li>
+  <li>Second, the higher education industry puts too little weight on (appropriate) data and observations. Either a lecturer simply does not care about teaching (in which case they put no weight on anything) or a lecture does care but bases their decisions on an imagined conception of what students are.</li>
+</ul>
+
+<p>What conclusions did I draw from this?</p>
+
+<ul>
+  <li>The pattern for weekly deadlines is consistent across the year: there is some activity throughout the week, with a clear peak the day before the deadline.
+    <ul>
+      <li>One consequence is that we cannot assume comfort with material taught on Monday during a session later in the week, e.g., on Thursday.</li>
+    </ul>
+  </li>
+  <li>Students respond to incentives, just like the rest of us.
+    <ul>
+      <li>Our choices have a big impact on student habits.</li>
+      <li>Noteworthy to point out that most students do know the deadlines! This means we are communicating our deadlines well.</li>
+      <li>Thinking about incentives is important more generally. E.g. it explains the difference between attendance in lectures and attendance in assessed sessions.</li>
+    </ul>
+  </li>
+  <li>These findings are particularly important for ‘linear’ subjects, where knowledge/understanding of Week 1 material is required to learn Week 2 material.</li>
+  <li>Shouldn’t judge students or label them as ‘bad students’.
+    <ul>
+      <li>Better to label the habit, not the individual.</li>
+      <li>This is more to do with human nature, than students in particular.</li>
+      <li>This is mostly about incentives. Designing a course well includes creating incentives which result in good learning behaviours. (Compare with the famous example of opting-in or opting-out of a country’s organ donation registry.)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="limitations-of-the-data">Limitations of the data</h2>
+<p>There are several sources of noise and error in this data. I will say ‘data is positively biased’ to mean that data shows students working earlier than they actually are, and ‘negatively biased’ to say that data shows students are working later than they actually are.</p>
+
+<p>Sources of positive bias.</p>
+<ul>
+  <li>Looking at Start Time. Students may open the assessment during the week,
+but actually only finish it on the weekend.</li>
+  <li>Students have multiple attempts on the coursework and I only looked at the start time of their earliest attempt.</li>
+  <li>I excluded students who did not attempt the coursework or attempted it late.</li>
+</ul>
+
+<p>Sources of negative bias.</p>
+<ul>
+  <li>There was a ‘Practice Version’ of each e-assessment available. Students were encouraged to use these to practice before attempting the actual assessed version. Some students did this, but a brief look at the data shows that most people did not attempt these.</li>
+  <li>Did not take into account mitigating circumstances, e.g. illness.</li>
+  <li>Does not account for other forms of independent study. E.g. a student might review lectures/workshop questions before attempting the e-assessment.</li>
+</ul>
+
+<p>Sources of unknown bias.</p>
+<ul>
+  <li>Most of our students have done A-Level Maths and/or Physics, so find the year easy. This probably means that students do not need to attempt coursework in a timely manner in order to keep up with the material.</li>
+  <li>This data only relates to specific style of coursework. There is no data on semester long projects, essays, etc. My prediction is that similar patterns will emerge, but spread out according to the size of the task.</li>
+  <li>Several students suspended or withdrew or were terminated during year. Their data will be included in early modules but not in later modules.</li>
+</ul>
+
+
+		</div><!-- /.container -->
+		
+		<footer>
+    		<ul>
+        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
+        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
+			</ul>
+		</footer>
+	</body>
+</html>

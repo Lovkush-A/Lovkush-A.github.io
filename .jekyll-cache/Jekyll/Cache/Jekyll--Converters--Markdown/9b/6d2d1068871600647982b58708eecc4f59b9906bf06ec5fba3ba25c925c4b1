@@ -1,40 +1,9 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Blog</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-                	class = "current"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1 id="blog">Blog</h1>
+I"•<h1 id="blog">Blog</h1>
 
 <ul>
   <li>
     <h3 id="do-students-do-their-homework-last-minute"><a href="/2020/06/16/homework.html">Do students do their homework last minute?</a></h3>
-    <p>During my previous job teaching mathematics at the University of Leicester, I did a project to investigate whether students did their homework last minute, which involved some data processing in R.</p>
+    <p>In light of the current prominence of BlackLivesMatter, I decided to investigate crime in relation to race. Here I describe how I collected the data I will be analysing.</p>
   </li>
   <li>
     <h3 id="stop-and-search-part-i-data-collection"><a href="/2020/06/15/sas1.html">Stop and Search, Part I, Data Collection</a></h3>
@@ -91,14 +60,4 @@ and GitHub Pages.</p>
   </li>
 </ul>
 
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
