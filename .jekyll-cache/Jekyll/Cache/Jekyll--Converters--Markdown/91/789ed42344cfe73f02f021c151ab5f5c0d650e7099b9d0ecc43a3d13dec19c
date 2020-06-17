@@ -1,0 +1,173 @@
+I"�$<p>In this post, I describe the cleaning I did on the data.</p>
+
+<h2 id="other-posts-in-series">Other posts in series</h2>
+
+<ul>
+  <li><a href="/2020/06/15/sas1.html">Stop and Search, Part I, Data Collection</a></li>
+</ul>
+
+<h2 id="the-cleaning">The cleaning</h2>
+<p>I cleaned each column, one by one. Note I call the original frame <code class="highlighter-rouge">sas</code> and created a copy <code class="highlighter-rouge">sas_clean</code> in which I would do the cleaning.</p>
+
+<ul>
+  <li>To see a list of all the columns, I ran the code <code class="highlighter-rouge">sas.columns</code>.</li>
+  <li>To investigate the distribution of values in a column (before and after cleaning), I would use the code <code class="highlighter-rouge">sas.column.value_counts(dropna = False)</code></li>
+  <li>Some columns required no cleaning:
+    <ul>
+      <li>age_range</li>
+      <li>gender</li>
+      <li>location.latitude and location.longitude (except I renamed thse columns)</li>
+      <li>force</li>
+      <li>month</li>
+    </ul>
+  </li>
+  <li>The other columns did require some cleaning:
+    <ul>
+      <li>self_defined_ethnicity and officer_defined_ethnicity</li>
+      <li>type</li>
+      <li>outcome</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="ethnicity">Ethnicity</h2>
+<p><code class="highlighter-rouge">officer_defined_ethnicity</code> was mostly clean. The distribution of values were:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>White    608092
+Black    259504
+Asian    139531
+NaN       91601
+Other     31845
+Mixed      2563
+</code></pre></div></div>
+
+<p>The only change I made was to combine mixed with other.</p>
+
+<p><br />
+<br />
+<code class="highlighter-rouge">self_defined_ethnicity</code> was less clean, and the distribution of values were:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>White - English/Welsh/Scottish/Northern Irish/British                                   475167
+Other ethnic group - Not stated                                                         154802
+White - Any other White background                                                       85322
+Black/African/Caribbean/Black British - Any other Black/African/Caribbean background     78340
+Black/African/Caribbean/Black British - African                                          66072
+Black/African/Caribbean/Black British - Caribbean                                        49736
+Asian/Asian British - Any other Asian background                                         44517
+NaN                                                                                      41149
+Asian/Asian British - Pakistani                                                          33907
+Asian/Asian British - Bangladeshi                                                        24128
+Other ethnic group - Any other ethnic group                                              16449
+Mixed/Multiple ethnic groups - Any other Mixed/Multiple ethnic background                15560
+Asian/Asian British - Indian                                                             14929
+Mixed/Multiple ethnic groups - White and Black Caribbean                                 14063
+White - Irish                                                                             7843
+Mixed/Multiple ethnic groups - White and Black African                                    4246
+Mixed/Multiple ethnic groups - White and Asian                                            3598
+White - Gypsy or Irish Traveller                                                          1689
+Asian/Asian British - Chinese                                                             1476
+Other ethnic group - Arab                                                                  143
+</code></pre></div></div>
+
+<p>I decided to group these up according to the same categories used in <code class="highlighter-rouge">officer_defined_ethnicity</code>. This was done using <code class="highlighter-rouge">.replace</code>:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def simplify_eth(ethnicity):
+    if isinstance(ethnicity, float) or 'Not stated' in ethnicity:
+        return np.nan
+    elif 'Other' in ethnicity or 'Mixed' in ethnicity:
+        return 'Other'
+    elif 'Asian' in ethnicity:
+        return 'Asian'
+    elif 'Black' in ethnicity:
+        return 'Black'
+    elif 'White' in ethnicity:
+        return 'White'
+
+ethnicities = {eth: simplify_eth(eth) for eth in sas.self_defined_ethnicity.unique()}
+sas_clean = sas_clean.replace(to_replace = ethnicities)
+</code></pre></div></div>
+
+<p><br />
+<br />
+Finally, I wanted to create a column <code class="highlighter-rouge">ethnicity</code> that combines these two columns. I started by renaming the other two columns, creating the new column, and filling it in with values where there is no disagreement between the officer defined and self defined ethnicity.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sas_clean.rename(columns = {'self_defined_ethnicity': 'self',
+                            'officer_defined_ethnicity': 'officer'}, inplace = True)
+sas_clean['ethnicity'] = np.nan
+
+# if officer and self agree, set ethnicity to either.
+indices = (sas_clean.officer == sas_clean.self)
+sas_clean.loc[indices, 'ethnicity'] = sas_clean.officer[indices]
+
+# if officer is null, set ethnicity to self, and vice versa
+indices = (sas_clean.officer.isnull())
+sas_clean.loc[indices, 'ethnicity'] = sas_clean.self[indices]
+
+indices = (sas_clean.self.isnull())
+sas_clean.loc[indices, 'ethnicity'] = sas_clean.officer[indices]
+</code></pre></div></div>
+
+<p><br />
+<br />
+I created a column <code class="highlighter-rouge">conflicted</code> to list all the cases where the stated ethnicity differs:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sas_clean['conflicted'] = np.nan
+indices = (sas_clean.officer != sas_clean.self) &amp; (sas_clean.officer.notna()) &amp; (sas_clean.self.notna())
+sas_clean.loc[indices, 'conflicted'] = sas_clean.officer[indices] + '_' + sas_clean.self[indices]
+sas_clean.conflicted.value_counts()
+</code></pre></div></div>
+
+<p>The output was:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Black_Other      18774
+White_Other      12423
+Asian_Other       6240
+Other_Asian       5319
+Other_White       4243
+Black_White       2924
+Asian_White       2394
+White_Asian       2027
+Black_Asian       1990
+White_Black       1935
+Other_Black       1764
+Asian_Black       1577
+</code></pre></div></div>
+
+<p><br />
+<br />
+To decide how to deal with this, I went back into the original <code class="highlighter-rouge">self_defined_ethnicity</code> to determine what the appropriate label ought to be.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for i in sas_clean.conflicted.unique():
+    print(i)
+    indices = (sas_clean.conflicted == i)
+    print(sas.loc[indices, 'self_defined_ethnicity'].value_counts())
+    print()
+</code></pre></div></div>
+
+<p>A sample of the output is:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Black_Other
+Mixed/Multiple ethnic groups - White and Black Caribbean                     9158
+Mixed/Multiple ethnic groups - Any other Mixed/Multiple ethnic background    4891
+Mixed/Multiple ethnic groups - White and Black African                       2689
+Other ethnic group - Any other ethnic group                                  1835
+Mixed/Multiple ethnic groups - White and Asian                                194
+
+White_Black
+Black/African/Caribbean/Black British - Any other Black/African/Caribbean background    815
+Black/African/Caribbean/Black British - African                                         633
+Black/African/Caribbean/Black British - Caribbean                                       487
+
+Other_Black
+Black/African/Caribbean/Black British - African                                         819
+Black/African/Caribbean/Black British - Any other Black/African/Caribbean background    750
+Black/African/Caribbean/Black British - Caribbean                                       195
+</code></pre></div></div>
+
+<p>Deciding how to deal with these cases was the trickiest part of the cleaning. First, this is a sensitive issue and it feels wrong for me to decide how people should be labelled. Second, there is clearly no ‘right’ answer here, and I have to use my judgement.  In the end, for most cases, I chose the self_defined_ethnicity.  However, the two big exceptions were when the officer identified the person as Black or White but the person identified themselves as mixed. There were 30000 such cases. If I added them to the ‘Other’ category, this would grossly skew the numbers and misrepresent the situation, so I decided to assign these Black and White (respectively).  Different people will make different judgements on this, and I suppose this is one way our own biases can creep into the data analysis.</p>
+
+<p>In the end, the distribution of ethnicities in this new column is:</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>White    645261
+Black    269286
+Asian    143468
+NaN       40383
+Other     34738
+</code></pre></div></div>
+
+<h2 id="type">Type</h2>
+<p>There are 3 types of stop-and-search:</p>
+
+:ET

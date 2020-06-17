@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html>
-	<head>
-    	<meta charset="utf-8">
-		<title>Stop and Search, Part I, Data Collection</title>
-    	<!-- link to main stylesheet -->
-		<link rel="stylesheet" href="/assets/css/styles.css">
-	</head>
-	<body>
-    	<nav>
-    <ul>
-    
-        <li><a
-                href="/"
-            	
-            >
-            Home
-        </a></li>
-    
-        <li><a
-                href="/blog/"
-            	
-            >
-            Blog
-        </a></li>
-    
-    </ul>
-</nav>
-        <div class="container">
-            <h1>Stop and Search, Part I, Data Collection</h1>
-<p>15 Jun 2020</p>
-
-<p>In light of the current prominence of BlackLivesMatter, I decided to investigate crime in relation to race. Here I describe how I collected the data I will be analysing.</p>
+I"<p>In light of the current prominence of BlackLivesMatter, I decided to investigate crime in relation to race. Here I describe how I collected the data I will be analysing.</p>
 
 <h2 id="other-posts-in-series">Other posts in series</h2>
 
@@ -143,14 +111,4 @@ sas_df.to_csv('sas.csv')
 <p><img src="/assets/images/sas1.png" alt="image" /></p>
 
 <p>One might say, ‘Look, white people are stopped more than black people, so the police are not racist.’ This is obviously simplistic. The aim of the project is to dig deeper into the data and see what patterns I can find.</p>
-
-		</div><!-- /.container -->
-		
-		<footer>
-    		<ul>
-        		<li><a href="http://www.lovkush.com">lovkush.com</a></li>
-        		<li><a href="https://github.com/lovkush-a">github.com/lovkush-a</a></li>
-			</ul>
-		</footer>
-	</body>
-</html>
+:ET
