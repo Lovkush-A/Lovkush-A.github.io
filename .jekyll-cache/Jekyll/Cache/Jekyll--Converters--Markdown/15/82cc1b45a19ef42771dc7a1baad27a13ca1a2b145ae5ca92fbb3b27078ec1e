@@ -1,2 +1,0 @@
-I"U<p>I begin the hyper-parameter optimisations. I started by looking at <code class="highlighter-rouge">n_estimators</code> in the Random Forest model. The first attempt to determine which value was the best produced a surprising range of performances, so I delved further to better understand how the performance can depend on the folds.</p>
-:ET

@@ -1,7 +1,0 @@
-I"(<p>In this post, I describe the cleaning I did on the data.</p>
-
-<h2 id="other-posts-in-series">Other posts in series</h2>
-
-<h2 id="the-cleaning">The cleaning</h2>
-<p>I cleaned each column, one by one.  To see all the columns, I ran the code `sas.columns’. I started by cleaning the column</p>
-:ET
